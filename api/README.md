@@ -19,6 +19,9 @@
 In `bootstrap.py` we created a singleton `postgresql_artists_repository` which will be used in our project.
 When we initiate this singleton, we will create 3 tables (if they  don't already exist).
 the 3 tables are:
+
     - Artists:
+    
     - New_releases
+    
     - new_releases_artist
