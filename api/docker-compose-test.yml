@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  back:
+    build:
+      context: .
+      dockerfile: Dockerfile_tests
+    ports:
+      - 5000:5000
+    environment:
+      FLASK_APP_ENV: dev
+    restart: on-failure
+    links:
+      - postgres:postgres
+    depends_on:
+      - postgres
+    volumes:
+      - ./:/Spotify_FlaskApp
+    command: bash -c "chmod -R 700 /Spotify_FlaskApp/scripts/ && /Spotify_FlaskApp/scripts/wait-for-services.sh postgres:5432 && sleep 15 && python /Spotify_FlaskApp/app.py"
+
+  postgres:
+    image: postgres
+    ports:
+      - 5433:5432
+    restart: on-failure
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: spotify
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - ./data/postgres/data:/var/lib/postgresql/pgdata
